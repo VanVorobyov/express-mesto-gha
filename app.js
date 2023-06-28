@@ -9,17 +9,17 @@ app.use(bodyParser.json());
 
 mongoose.connect('mongodb://localhost:27017/mestodb');
 
-app.use('/users', require('./routes/users'));
-app.use('/cards', require('./routes/cards'));
-
 app.use((req, res, next) => {
   req.user = {
-    _id: '6499df4a2e36a964b0e17091',
+    _id: '649c5f75c3d41b47f210203c',
   };
-
   next();
 });
 
+app.use('/users', require('./routes/users'));
+app.use('/cards', require('./routes/cards'));
+
 app.listen(PORT, () => {
-  console.log('server starting');
+  // eslint-disable-next-line no-console
+  console.log(`App listening on port ${PORT}`);
 });
