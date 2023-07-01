@@ -1,5 +1,6 @@
 # Проект Mesto: фронтенд + бэкенд
-
+[![Tests](../../actions/workflows/tests-13-sprint.yml/badge.svg)](../../actions/workflows/tests-13-sprint.yml) [![Tests](../../actions/workflows/tests-14-sprint.yml/badge.svg)](../../actions/workflows/tests-14-sprint.yml)
+---
 Mesto-React - это сервис, который позволяет пользователю делиться своими фотографиями с другими пользователями, просматривать фотографии других пользователей, а также ставить лайки.
 
 В рамках проекта стал доступен backend-функционал сервиса, с помощью которого пользователь может хранить всю информацию в базе данных.
