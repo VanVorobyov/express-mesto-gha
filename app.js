@@ -1,6 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const userRoutes = require('./routes/users');
+const cardRoutes = require('./routes/cards');
+
+const { ERROR_NOT_FOUND } = require('./utils/errors/errors');
 
 const { PORT = 3000 } = process.env;
 
@@ -16,8 +20,12 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/users', require('./routes/users'));
-app.use('/cards', require('./routes/cards'));
+app.use('/users', userRoutes);
+app.use('/cards', cardRoutes);
+
+app.use('*', (reg, res) => {
+  res.status(ERROR_NOT_FOUND).send({ message: 'Запрошен несуществующий роут' });
+});
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console

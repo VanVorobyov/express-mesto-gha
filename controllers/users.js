@@ -12,10 +12,14 @@ module.exports.getUser = (req, res) => {
     .orFail(() => new Error('Not found'))
     .then((user) => res.status(200).send(user))
     .catch((err) => {
-      if (err.message === 'Not found') {
+      if (err.name === 'CastError') {
+        res
+          .status(ERROR_BAD_REQUEST)
+          .send({ message: 'Переданы некорректные данные.' });
+      } else if (err.message === 'Not found') {
         res
           .status(ERROR_NOT_FOUND)
-          .send({ message: 'Пользователь по указанному _id не найден.' });
+          .send({ message: 'Пользователь с указанным _id не найден.' });
       } else {
         res.status(ERROR_DEFAULT).send({ message: 'На сервере произошла ошибка.' });
       }
@@ -40,7 +44,7 @@ module.exports.createUser = (req, res) => {
 module.exports.updateUser = (req, res) => {
   const { name, about } = req.body;
   const id = req.user._id;
-  User.findByIdAndUpdate(id, { name, about }, { new: true })
+  User.findByIdAndUpdate(id, { name, about }, { new: true, runValidators: true })
     .orFail(() => new Error('Not found'))
     .then((user) => res.status(200).send(user))
     .catch((err) => {
