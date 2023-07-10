@@ -6,12 +6,12 @@ const cardRoutes = require('./routes/cards');
 
 const { ERROR_NOT_FOUND } = require('./utils/errors/errors');
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3000, MONGODB = 'mongodb://localhost:27017/mestodb' } = process.env;
 
 const app = express();
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb://localhost:27017/mestodb');
+mongoose.connect(MONGODB);
 
 app.use((req, res, next) => {
   req.user = {
