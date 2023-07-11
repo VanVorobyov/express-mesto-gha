@@ -1,10 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const userRoutes = require('./routes/users');
 const cardRoutes = require('./routes/cards');
 const { createUser } = require('./controllers/users');
 const login = require('./controllers/login');
+const auth = require('./middlewares/auth');
 
 const { ERROR_NOT_FOUND } = require('./utils/errors/errors');
 
@@ -12,7 +14,7 @@ const { PORT = 3000, MONGODB = 'mongodb://localhost:27017/mestodb' } = process.e
 
 const app = express();
 app.use(bodyParser.json());
-
+app.use(cookieParser());
 mongoose.connect(MONGODB);
 
 app.post('/signin', login);
@@ -25,8 +27,8 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/users', userRoutes);
-app.use('/cards', cardRoutes);
+app.use('/users', auth, userRoutes);
+app.use('/cards', auth, cardRoutes);
 
 app.use('*', (reg, res) => {
   res.status(ERROR_NOT_FOUND).send({ message: 'Запрошен несуществующий роут' });
