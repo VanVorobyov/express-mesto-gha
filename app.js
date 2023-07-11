@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const userRoutes = require('./routes/users');
 const cardRoutes = require('./routes/cards');
+const { createUser } = require('./controllers/users');
+const login = require('./controllers/login');
 
 const { ERROR_NOT_FOUND } = require('./utils/errors/errors');
 
@@ -12,6 +14,9 @@ const app = express();
 app.use(bodyParser.json());
 
 mongoose.connect(MONGODB);
+
+app.post('/signin', login);
+app.post('/signup', createUser);
 
 app.use((req, res, next) => {
   req.user = {
