@@ -6,9 +6,10 @@ module.exports.login = (req, res) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, 'login_token');
+      const token = jwt.sign({ _id: user._id }, 'login_token', { expiresIn: '7d' });
+      const day = 24 * 60 * 60 * 1000;
       res.status(201).cookie('login_token', `Bearer ${token}`, {
-        expires: new Date(Date.now() + 7 * 24 * 3600000), httpOnly: true,
+        maxAge: 7 * day, httpOnly: true,
       });
     })
     .catch((err) => {
