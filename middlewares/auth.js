@@ -1,19 +1,20 @@
 const jwt = require('jsonwebtoken');
-const NotFoundError = require('../utils/errors/unauthorizedError');
-// eslint-disable-next-line consistent-return
+
+const UnauthorizedError = require('../utils/errors/unauthorizedError');
+
 module.exports = (req, res, next) => {
-  const { token } = req.cookie;
+  const { token } = req.cookies;
   if (!token) {
-    return next(new NotFoundError('Необходима авторизация'));
+    next(new UnauthorizedError('Необходимо авторизоваться'));
+    return;
   }
   let payload;
   try {
-    payload = jwt.verify(token, 'login-token');
+    payload = jwt.verify(token, 'some-secret-key');
   } catch (err) {
-    return next(new NotFoundError('Необходима авторизация'));
+    next(new UnauthorizedError('Необходимо авторизоваться'));
+    return;
   }
-
   req.user = payload;
-
   next();
 };
