@@ -1,8 +1,5 @@
-const bcrypt = require('bcryptjs');
-
 const User = require('../models/user');
 
-const ConflictError = require('../utils/errors/conflictError');
 const NotFoundError = require('../utils/errors/notFoundError');
 const BadRequestError = require('../utils/errors/badRequestError');
 
@@ -21,26 +18,6 @@ module.exports.getUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         throw new BadRequestError('Переданы некорректные данные пользователя');
-      } else {
-        next(err);
-      }
-    });
-};
-
-module.exports.createUser = (req, res, next) => {
-  const {
-    name, about, avatar, email, password,
-  } = req.body;
-  bcrypt.hash(password, 10)
-    .then((hash) => User.create({
-      name, about, avatar, email, password: hash,
-    }))
-    .then((user) => res.status(201).send(user))
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        throw new BadRequestError('Переданы некорректные данные при создании пользователя.');
-      } else if (err.code === 11000) {
-        throw new ConflictError('Пользователь с таким email уже существует');
       } else {
         next(err);
       }
@@ -86,25 +63,3 @@ module.exports.getCurrentUser = (req, res, next) => {
     .then((user) => res.status(200).send(user))
     .catch(next);
 };
-
-// module.exports.login = (req, res) => {
-//   const { email, password } = req.body;
-//   User.findOne({ email })
-//     .then((user) => {
-//       if (!user) {
-//         return Promise.reject(new Error('Неправильные почта или пароль'));
-//       }
-//       return bcrypt.compare(password, user.password);
-//     })
-//     .then((matched) => {
-//       if (!matched) {
-//         return Promise.reject(new Error('Неправильные почта или пароль'));
-//       }
-//       res.send({ message: 'Всё верно!' });
-//     })
-//     .catch((err) => {
-//       res
-//         .status(401)
-//         .send({ message: err.message });
-//     });
-// };

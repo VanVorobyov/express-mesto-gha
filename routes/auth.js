@@ -1,6 +1,5 @@
 const router = require('express').Router();
-const { login } = require('../controllers/login');
-const { createUser } = require('../controllers/users');
+const { login, createUser } = require('../controllers/login');
 const { validateLogin, validateRegister } = require('../utils/validators/userValidator');
 
 router.post('/signup', validateRegister, createUser);

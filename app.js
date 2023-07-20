@@ -16,7 +16,6 @@ app.use(cookieParser());
 mongoose.connect(MONGODB);
 
 app.use('/', authRoutes);
-
 app.use('/users', auth, userRoutes);
 app.use('/cards', auth, cardRoutes);
 app.use('*', (reg, res) => {
