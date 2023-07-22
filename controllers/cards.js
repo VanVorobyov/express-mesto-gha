@@ -57,6 +57,7 @@ module.exports.likeCard = (req, res, next) => {
       }
     });
 };
+
 module.exports.deleteLike = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params.id,

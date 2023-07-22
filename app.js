@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const { errors } = require('celebrate');
 const cookieParser = require('cookie-parser');
 const userRoutes = require('./routes/users');
 const cardRoutes = require('./routes/cards');
@@ -22,6 +23,7 @@ app.use('*', (reg, res) => {
   res.status(404).send({ message: 'Запрошен несуществующий роут' });
 });
 
+app.use(errors());
 app.use(errorHandler);
 
 app.listen(PORT, () => {
