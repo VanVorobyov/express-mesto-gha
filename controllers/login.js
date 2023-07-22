@@ -6,14 +6,13 @@ const BadRequestError = require('../utils/errors/badRequestError');
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
-  User.findUserByCredentials({ email, password })
+  return User
+    .findUserByCredentials({ email, password })
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' });
-      const day = 24 * 60 * 60 * 1000;
-      res.cookie('login_token', token, {
-        maxAge: 7 * day, httpOnly: true,
+      const token = jwt.sign({ _id: user._id }, 'some-secret-key', {
+        expiresIn: '7d',
       });
-      res.status(200).send(user);
+      res.send({ token });
     })
     .catch(next);
 };
