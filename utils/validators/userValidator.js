@@ -1,5 +1,5 @@
 const { celebrate, Joi } = require('celebrate');
-const { isURL, isID } = require('../constants');
+const { isURL } = require('../constants');
 const BadRequest = require('../errors/badRequestError');
 
 const urlRegex = (url) => {
@@ -7,13 +7,6 @@ const urlRegex = (url) => {
     return url;
   }
   throw new BadRequest('Некорректный адрес URL');
-};
-
-const idRegex = (id) => {
-  if (isID) {
-    return id;
-  }
-  throw new BadRequest('Передан некорретный id.');
 };
 
 module.exports.validateLogin = celebrate({
@@ -48,6 +41,6 @@ module.exports.validateAvatar = celebrate({
 
 module.exports.validateUserId = celebrate({
   params: Joi.object().keys({
-    userId: Joi.string().required().custom(idRegex),
+    id: Joi.string().required().hex().length(24),
   }),
 });
