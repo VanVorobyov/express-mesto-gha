@@ -10,6 +10,6 @@ module.exports.validateCreateCard = celebrate({
 
 module.exports.validateCardById = celebrate({
   params: Joi.object().keys({
-    cardId: Joi.string().required().hex().length(24),
+    id: Joi.string().required().hex().length(24),
   }),
 });

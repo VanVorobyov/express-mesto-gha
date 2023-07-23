@@ -36,7 +36,8 @@ module.exports.deleteCard = (req, res, next) => {
       } else {
         throw new ForbiddenError('У Вас нет прав для совершения данного действия');
       }
-    });
+    })
+    .catch(next);
 };
 
 module.exports.likeCard = (req, res, next) => {
