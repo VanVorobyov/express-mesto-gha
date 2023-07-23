@@ -27,18 +27,15 @@ module.exports.createUser = (req, res, next) => {
       name, about, avatar, email, password: hash,
     }))
     .then((user) => {
-      // eslint-disable-next-line no-param-reassign
-      user.password = undefined;
       res.status(201).send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы некорректные данные при создании пользователя.'));
-        return;
-      } if (err.code === 11000) {
+      } else if (err.code === 11000) {
         next(new ConflictError('Пользователь с таким email уже существует'));
-        return;
+      } else {
+        next(err);
       }
-      next(err);
     });
 };
