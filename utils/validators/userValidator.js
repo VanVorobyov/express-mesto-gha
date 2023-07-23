@@ -1,13 +1,5 @@
 const { celebrate, Joi } = require('celebrate');
 const { isURL } = require('../constants');
-const BadRequest = require('../errors/badRequestError');
-
-const urlRegex = (url) => {
-  if (isURL) {
-    return url;
-  }
-  throw new BadRequest('Некорректный адрес URL');
-};
 
 module.exports.validateLogin = celebrate({
   body: Joi.object().keys({
@@ -20,7 +12,7 @@ module.exports.validateRegister = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().custom(urlRegex),
+    avatar: Joi.string().pattern(isURL),
     email: Joi.string().required().email(),
     password: Joi.string().required(),
   }),
@@ -35,7 +27,7 @@ module.exports.validateUserInfo = celebrate({
 
 module.exports.validateAvatar = celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().required().custom(urlRegex),
+    avatar: Joi.string().required().pattern(isURL),
   }),
 });
 

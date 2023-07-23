@@ -3,9 +3,11 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 const cookieParser = require('cookie-parser');
+
 const userRoutes = require('./routes/users');
 const cardRoutes = require('./routes/cards');
 const authRoutes = require('./routes/auth');
+
 const auth = require('./middlewares/auth');
 const errorHandler = require('./middlewares/errorHandler');
 
