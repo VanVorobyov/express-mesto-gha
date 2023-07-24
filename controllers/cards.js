@@ -24,7 +24,7 @@ module.exports.createCard = (req, res, next) => {
 };
 
 module.exports.deleteCard = (req, res, next) => {
-  Card.findByIdAndRemove(req.params.id)
+  Card.findById(req.params.id)
     .then((card) => {
       if (!card) {
         throw new NotFoundError('Запрашиваемая карточка места не найдена');
@@ -52,7 +52,7 @@ module.exports.likeCard = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        throw new BadRequestError('Переданы некорректные данные для постановки лайка');
+        next(new BadRequestError('Переданы некорректные данные для постановки лайка'));
       } else {
         next(err);
       }
@@ -71,7 +71,7 @@ module.exports.deleteLike = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        throw new BadRequestError('Переданы некорректные данные для снятия лайка');
+        next(new BadRequestError('Переданы некорректные данные для снятия лайка'));
       } else {
         next(err);
       }
